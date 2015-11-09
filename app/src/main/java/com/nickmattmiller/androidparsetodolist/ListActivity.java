@@ -1,10 +1,27 @@
 package com.nickmattmiller.androidparsetodolist;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.nickmattmiller.androidparsetodolist.model.Task;
+import com.nickmattmiller.androidparsetodolist.model.TasksAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import java.util.ArrayList;
 
 public class ListActivity extends ActionBarActivity {
 
@@ -60,7 +77,7 @@ public class ListActivity extends ActionBarActivity {
                 Task task = adapter.getItem(position);
 
                 Intent intent = new Intent(getBaseContext(), UpdateActivity.class);
-                intent.putExtra("objectId",  task.getTaskId());
+                intent.putExtra("objectId", task.getTaskId());
                 startActivity(intent);
             }
         });
