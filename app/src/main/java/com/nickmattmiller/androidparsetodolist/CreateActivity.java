@@ -1,37 +1,63 @@
 package com.nickmattmiller.androidparsetodolist;
-
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+import android.widget.Button;
 
-public class CreateActivity extends AppCompatActivity {
+public class CreateActivity extends ActionBarActivity {
+
+    private TextView txtName;
+    private TextView txtDescription;
+    private String name;
+    private String description;
+    private Button btnCreate;
+    private Button btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        txtName = (TextView) findViewById(R.id.txtName);
+        txtDescription = (TextView) findViewById(R.id.txtDescription);
+
+        btnCreate = (Button) findViewById(R.id.btnCreate);
+        btnCreate.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                name = txtName.getText().toString();
+                description = txtDescription.getText().toString();
+
+                if (name.equals("") && description.equals("")) {
+                    Toast.makeText(getApplicationContext(),
+                            "Please enter name and description",
+                            Toast.LENGTH_LONG).show();
+
+                } else {
+                    ParseObject task = new ParseObject("Task");
+                    task.put("name", name);
+                    task.put("description", description);
+                    task.saveInBackground();
+
+                    Intent listActivity = new Intent(getApplicationContext(), ListActivity.class);
+                    startActivity(listActivity);
+                }
+
+            }
+        });
+
+        btnBack = (Button) findViewById(R.id.btnBack);
+        btnBack.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+
+                Intent listActivity = new Intent(getApplicationContext(), ListActivity.class);
+                startActivity(listActivity);
+
+            }
+        });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_create, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
